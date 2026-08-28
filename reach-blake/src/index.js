@@ -55,6 +55,30 @@
 const VALID_STATUSES = ['flip', 'smart'];
 
 /**
+ * Headers applied to every read response, success and failure alike.
+ *
+ * `Access-Control-Allow-Origin` is required because the front end is served
+ * from a different origin (GitHub Pages) than this Worker. It is set on error
+ * responses too, not just the 200 — without it the browser blocks the response
+ * before JavaScript can see it, and a legitimate 500 becomes indistinguishable
+ * from the network being down.
+ *
+ * `*` is appropriate here: the read endpoint is public and carries no
+ * credentials. Writes deliberately send no CORS headers, so a browser on
+ * another origin cannot call them at all.
+ *
+ * `no-store` keeps the status fresh. It is the entire point of the site, and
+ * KV's own propagation delay already puts a floor under how stale it can be —
+ * an HTTP cache on top of that would compound the lag.
+ *
+ * @type {Record<string, string>}
+ */
+const READ_HEADERS = {
+	'Access-Control-Allow-Origin': '*',
+	'Cache-Control': 'no-store',
+};
+
+/**
  * Compares two tokens without leaking their contents through timing.
  *
  * Both sides are SHA-256 hashed before comparison. That is not for secrecy — it
@@ -119,6 +143,9 @@ async function isAuthorized(request, env) {
  * `status` to make the cause obvious. Contrast {@link writeStatus}, where the
  * same invalid value is a 400 because there the caller supplied it.
  *
+ * Both responses carry {@link READ_HEADERS}, so a cross-origin front end can
+ * read the body either way and never sees a cached value.
+ *
  * @param {Env} env Worker bindings.
  * @returns {Promise<Response>} JSON response, always.
  */
@@ -127,10 +154,10 @@ async function readStatus(env) {
 
 	// A bad value here is bad stored data, not a bad request, so it is a 5xx.
 	if (!VALID_STATUSES.includes(status)) {
-		return Response.json({ error: 'invalid status', status }, { status: 500 });
+		return Response.json({ error: 'invalid status', status }, { status: 500, headers: READ_HEADERS });
 	}
 
-	return Response.json({ status });
+	return Response.json({ status }, { headers: READ_HEADERS });
 }
 
 /**

@@ -51,6 +51,23 @@ describe('Blake status worker', () => {
 			expect(response.status).toBe(500);
 			expect(await response.json()).toMatchObject({ error: 'invalid status' });
 		});
+
+		// The front end is served from another origin, so without these headers on
+		// the error response too a real 500 is indistinguishable from a dead network.
+		it.each([
+			[200, 'flip'],
+			[500, null],
+		])('sends CORS and no-store on the %i', async (code, stored) => {
+			if (stored) {
+				await env.BLAKE_STATUS.put('status', stored);
+			}
+
+			const response = await exports.default.fetch('http://example.com');
+
+			expect(response.status).toBe(code);
+			expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*');
+			expect(response.headers.get('Cache-Control')).toBe('no-store');
+		});
 	});
 
 	describe('PUT (authenticated)', () => {
@@ -89,6 +106,15 @@ describe('Blake status worker', () => {
 			expect(response.status).toBe(400);
 			expect(await response.json()).toMatchObject({ error: 'invalid status' });
 			expect(await env.BLAKE_STATUS.get('status')).toBeNull();
+		});
+
+		// Writes are intentionally not CORS-enabled: no browser on another origin
+		// should be able to call them, successfully or otherwise.
+		it('sends no CORS header, even on success', async () => {
+			const response = await put({ status: 'flip' });
+
+			expect(response.status).toBe(200);
+			expect(response.headers.get('Access-Control-Allow-Origin')).toBeNull();
 		});
 
 		it('400s on a malformed body', async () => {
