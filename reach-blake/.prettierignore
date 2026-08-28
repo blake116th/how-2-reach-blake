@@ -1,0 +1,4 @@
+# npm rewrites these with its own formatting, so leaving them to prettier
+# produces churn on every install.
+package.json
+package-lock.json

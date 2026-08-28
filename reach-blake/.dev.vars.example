@@ -1,0 +1,3 @@
+# Copy to .dev.vars and replace with your own value:
+#   openssl rand -hex 32
+STATUS_WRITE_TOKEN="generate-me"
