@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>loading...</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee&family=VT323&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <!-- Without JS the fetch never runs, so fall straight through to the
+		     failed state rather than leaving the loader spinning forever. -->
+    <noscript>
+      <style>
+        body.state-loading .variant-loading {
+          display: none;
+        }
+        body.state-loading .variant-failed {
+          display: grid;
+        }
+      </style>
+    </noscript>
+  </head>
+  <body class="state-loading">
+    <!-- ── loading ─────────────────────────────────────────────── -->
+    <section class="variant variant-loading plain">
+      <p class="plain-text">
+        loading<span class="dot dot1">.</span><span class="dot dot2">.</span
+        ><span class="dot dot3">.</span>
+      </p>
+    </section>
+
+    <!-- ── failed ──────────────────────────────────────────────── -->
+    <section class="variant variant-failed plain">
+      <p class="plain-text">failed :(</p>
+    </section>
+
+    <!-- ── flip phone ──────────────────────────────────────────── -->
+    <section class="variant variant-flip desk">
+      <div class="w95win">
+        <div class="tbar">
+          <div class="tbar-inner">
+            <div class="tbar-url">www.how-2-reach-blake.com &middot; [2G]</div>
+            <div class="tbar-btns">
+              <div class="tbar-btn">_</div>
+              <div class="tbar-btn">&#9633;</div>
+              <div class="tbar-btn">&times;</div>
+            </div>
+          </div>
+        </div>
+        <div class="content">
+          <div class="hdr">
+            <div class="badge">*** FLIP PHONE MODE ***</div>
+            <h1>CALL BLAKE ON HIS FLIP!</h1>
+            <p>
+              no apps. no read receipts. just a telephone chat like its '85.
+            </p>
+          </div>
+          <div class="stage stage-flip">
+            <figure class="polaroid p1">
+              <div class="polaroid-frame">
+                <img
+                  src="images/warren.webp"
+                  alt="Warren Buffett holding up a flip phone"
+                  width="240"
+                  height="185"
+                />
+                <figcaption class="cap">warren gets it</figcaption>
+              </div>
+              <div class="tape"></div>
+            </figure>
+            <figure class="polaroid p2">
+              <div class="polaroid-frame">
+                <img
+                  src="images/big-floppa.webp"
+                  alt="A caracal holding a pink flip phone to its ear"
+                  width="215"
+                  height="225"
+                />
+                <figcaption class="cap">big floppa approves</figcaption>
+              </div>
+              <div class="tape"></div>
+            </figure>
+            <figure class="polaroid p3">
+              <div class="polaroid-frame">
+                <img
+                  src="images/chuck.webp"
+                  alt="A senator using a flip phone"
+                  width="240"
+                  height="175"
+                />
+                <figcaption class="cap">senate certified</figcaption>
+              </div>
+              <div class="tape"></div>
+            </figure>
+            <figure class="polaroid p4">
+              <div class="polaroid-frame">
+                <img
+                  src="images/dolly.webp"
+                  alt="Dolly Parton on a flip phone"
+                  width="210"
+                  height="190"
+                />
+                <figcaption class="cap">im just like dolly</figcaption>
+              </div>
+              <div class="tape"></div>
+            </figure>
+          </div>
+        </div>
+        <div class="tickbar">
+          <div class="tick">
+            <span
+              >&#10038; 2G FOREVER &#10038; 160 CHARS MAX &#10038; NO GROUP
+              CHATS &#10038; EMOJI ARRIVES AS ??? &#10038; SNAP IT SHUT &#10038;
+              T9 GANG</span
+            >
+            <span aria-hidden="true"
+              >&#10038; 2G FOREVER &#10038; 160 CHARS MAX &#10038; NO GROUP
+              CHATS &#10038; EMOJI ARRIVES AS ??? &#10038; SNAP IT SHUT &#10038;
+              T9 GANG</span
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── smartphone ──────────────────────────────────────────── -->
+    <section class="variant variant-smart desk">
+      <div class="w95win">
+        <div class="tbar">
+          <div class="tbar-inner">
+            <div class="tbar-url">www.how-2-reach-blake.com &middot; [5G]</div>
+            <div class="tbar-btns">
+              <div class="tbar-btn">_</div>
+              <div class="tbar-btn">&#9633;</div>
+              <div class="tbar-btn">&times;</div>
+            </div>
+          </div>
+        </div>
+        <div class="content">
+          <div class="hdr">
+            <div class="badge">*** SMARTPHONE MODE ***</div>
+            <h1>TEXT BLAKE LIKE A NORMAL PERSON!</h1>
+            <p>slide him a blue bubble. he will get to it. eventually.</p>
+          </div>
+          <div class="stage stage-smart">
+            <div class="phone">
+              <div class="phone-body">
+                <div class="phone-btn"></div>
+                <div class="phone-screen">
+                  <div class="statusbar">
+                    <span>9:41</span>
+                    <div class="notch"></div>
+                    <span>100%</span>
+                  </div>
+                  <div class="convo-hdr">
+                    <div class="avatar">B</div>
+                    <div class="convo-name">blake &#9993;</div>
+                  </div>
+                  <div class="thread">
+                    <div class="bubble out">yo blake u free sat?</div>
+                    <div class="bubble out">blake??</div>
+                    <div class="bubble in">
+                      <img
+                        src="images/cat-sticker.webp"
+                        alt="A cat staring blankly"
+                        width="640"
+                        height="626"
+                      />
+                    </div>
+                    <div class="stamp">4 days later</div>
+                  </div>
+                  <div class="composer">
+                    <div class="composer-field">text blake...</div>
+                    <div class="composer-send">&uarr;</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tickbar">
+          <div class="tick">
+            <span
+              >&#10038; PREPARE FOR CAT STICKERS &#10038; BE PATIENT &#10038;
+              1,000+ UNREAD MESSAGES &#10038; BRAINROT NOT PERMITTED</span
+            >
+            <span aria-hidden="true"
+              >&#10038; PREPARE FOR CAT STICKERS &#10038; BE PATIENT &#10038;
+              1,000+ UNREAD MESSAGES &#10038; BRAINROT NOT PERMITTED</span
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="main.js"></script>
+  </body>
+</html>

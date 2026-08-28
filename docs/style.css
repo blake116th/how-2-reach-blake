@@ -1,0 +1,669 @@
+/* ── tokens ──────────────────────────────────────────────────────────
+   The two phone pages are structurally identical — same Win95 chrome,
+   header and marquee. Only the palette and the stage contents differ, so
+   the chrome is written once and each mode overrides these variables. */
+:root {
+  --desk: #2a1548;
+  --chrome: #c0c0c0;
+}
+
+.variant-flip {
+  --content-bg: #ef7fbe;
+  --ink: #2a0b3d;
+  --ticker-bg: #2a0b3d;
+  --ticker-fg: #c6ff3e;
+  --mobile-desk: #ef7fbe;
+}
+
+.variant-smart {
+  --content-bg: #6fc7e8;
+  --ink: #0b1440;
+  --ticker-bg: #0b1440;
+  --ticker-fg: #7df9ff;
+  --accent: #ff3ea5;
+  --mobile-desk: #6fc7e8;
+}
+
+/* ── state switching ─────────────────────────────────────────────────
+   One class on <body> is the single source of truth. Inactive variants
+   are display:none so they leave the accessibility tree entirely. */
+body {
+  margin: 0;
+  background: var(--desk);
+}
+
+.variant {
+  display: none;
+}
+
+body.state-loading .variant-loading,
+body.state-failed .variant-failed,
+body.state-flip .variant-flip,
+body.state-smart .variant-smart {
+  display: grid;
+}
+
+/* ── loading / failed ────────────────────────────────────────────── */
+.plain {
+  box-sizing: border-box;
+  min-height: 100svh;
+  place-items: center;
+  font-family: VT323, monospace;
+}
+
+.plain-text {
+  margin: 0;
+  font-size: 52px;
+  color: #b89fdd;
+  letter-spacing: 2px;
+}
+
+.dot1 {
+  animation: dot1 1.6s step-end infinite;
+}
+.dot2 {
+  animation: dot2 1.6s step-end infinite;
+}
+.dot3 {
+  animation: dot3 1.6s step-end infinite;
+}
+
+@keyframes dot1 {
+  0%,
+  74% {
+    opacity: 1;
+  }
+  75%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes dot2 {
+  0%,
+  24% {
+    opacity: 0;
+  }
+  25%,
+  74% {
+    opacity: 1;
+  }
+  75%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes dot3 {
+  0%,
+  49% {
+    opacity: 0;
+  }
+  50%,
+  74% {
+    opacity: 1;
+  }
+  75%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ── desk + window chrome ────────────────────────────────────────── */
+.desk {
+  box-sizing: border-box;
+  min-height: 100svh;
+  place-items: center;
+  position: relative;
+  padding: 24px 16px;
+  font-family: "Space Grotesk", sans-serif;
+  overflow: hidden;
+}
+
+.w95win {
+  width: 720px;
+  background: var(--chrome);
+  padding: 6px;
+  border: 2px solid #0a0a0a;
+  box-shadow:
+    inset 2px 2px 0 #fff,
+    inset -2px -2px 0 #808080,
+    14px 14px 0 rgba(0, 0, 0, 0.5);
+}
+
+.tbar {
+  margin-bottom: 6px;
+}
+
+.tbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: linear-gradient(90deg, #000080, #1084d0);
+  padding: 4px 8px;
+}
+
+.tbar-url {
+  font-family: VT323, monospace;
+  font-size: 20px;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.tbar-btns {
+  display: flex;
+  gap: 3px;
+}
+
+.tbar-btn {
+  width: 24px;
+  height: 22px;
+  background: var(--chrome);
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #404040;
+  border-bottom: 2px solid #404040;
+  display: grid;
+  place-items: center;
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1;
+}
+
+.content {
+  background: var(--content-bg);
+  border: 2px solid;
+  border-color: #808080 #fff #fff #808080;
+  overflow: hidden;
+}
+
+/* ── header ──────────────────────────────────────────────────────── */
+.hdr {
+  padding: 40px 40px 0;
+  text-align: center;
+}
+
+.badge {
+  display: inline-block;
+  font-family: VT323, monospace;
+  font-size: 20px;
+  color: #fff;
+  background: var(--ticker-bg);
+  border-radius: 999px;
+  padding: 4px 18px;
+  letter-spacing: 2px;
+}
+
+.hdr h1 {
+  margin: 18px 0 8px;
+  font-family: Bungee, sans-serif;
+  font-size: 58px;
+  line-height: 1.02;
+  color: #fff;
+  -webkit-text-stroke: 2px var(--ink);
+  text-shadow:
+    0 4px 0 var(--ink),
+    0 9px 0 rgba(42, 11, 61, 0.35);
+}
+
+.variant-smart .hdr h1 {
+  font-size: 54px;
+  line-height: 1.04;
+}
+
+.hdr p {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* ── ticker ──────────────────────────────────────────────────────── */
+.tickbar {
+  margin-top: 6px;
+  border: 2px solid;
+  border-color: #808080 #fff #fff #808080;
+  background: var(--ticker-bg);
+  overflow: hidden;
+  padding: 6px 0;
+}
+
+.tick {
+  display: flex;
+  white-space: nowrap;
+  width: max-content;
+  animation: tick 18s linear infinite;
+  font-family: VT323, monospace;
+  font-size: 22px;
+  color: var(--ticker-fg);
+  letter-spacing: 2px;
+}
+
+.tick span {
+  padding-right: 24px;
+}
+
+@keyframes tick {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ── flip stage: polaroids ───────────────────────────────────────── */
+.stage {
+  position: relative;
+  margin-top: 8px;
+}
+
+.stage-flip {
+  height: 712px;
+}
+
+.polaroid {
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+}
+
+.polaroid-frame {
+  background: #fff;
+  border: 3px solid var(--ink);
+  padding: 8px 8px 5px;
+  box-shadow: 7px 7px 0 rgba(42, 11, 61, 0.45);
+}
+
+.polaroid img {
+  display: block;
+  object-fit: cover;
+}
+
+.cap {
+  font-family: VT323, monospace;
+  font-size: 19px;
+  color: var(--ink);
+  text-align: center;
+  padding-top: 4px;
+}
+
+/* The strip of tape holding each photo to the board. */
+.tape {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  margin-left: -45px;
+  width: 90px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.6);
+  border-left: 2px dashed rgba(42, 11, 61, 0.3);
+  border-right: 2px dashed rgba(42, 11, 61, 0.3);
+}
+
+.p1 {
+  top: 72px;
+  left: 112px;
+  transform: rotate(-5deg);
+}
+.p1 img {
+  width: 240px;
+  height: 185px;
+  object-position: 72% 42%;
+}
+.p1 .tape {
+  transform: rotate(-3deg);
+}
+
+.p2 {
+  top: 132px;
+  right: 104px;
+  transform: rotate(5deg);
+}
+.p2 img {
+  width: 215px;
+  height: 225px;
+  object-position: 62% 40%;
+}
+.p2 .tape {
+  transform: rotate(4deg);
+}
+
+.p3 {
+  top: 344px;
+  left: 130px;
+  transform: rotate(3deg);
+}
+.p3 img {
+  width: 240px;
+  height: 175px;
+  object-position: 64% 20%;
+}
+.p3 .tape {
+  transform: rotate(-4deg);
+}
+
+.p4 {
+  top: 414px;
+  right: 112px;
+  transform: rotate(-4deg);
+}
+.p4 img {
+  width: 210px;
+  height: 190px;
+  object-position: 55% 16%;
+}
+.p4 .tape {
+  transform: rotate(3deg);
+}
+
+/* ── smart stage: phone mockup ───────────────────────────────────── */
+.stage-smart {
+  height: 560px;
+}
+
+.phone {
+  position: absolute;
+  top: 64px;
+  left: 50%;
+  margin-left: -112px;
+  width: 210px;
+  transform: rotate(5deg);
+  filter: drop-shadow(10px 12px 0 rgba(11, 20, 64, 0.4));
+}
+
+.phone-body {
+  position: relative;
+  height: 420px;
+  background: linear-gradient(160deg, #3a3f5c 0%, #191d33 60%, #0d1024 100%);
+  border: 3px solid var(--ink);
+  border-radius: 34px;
+  padding: 12px;
+}
+
+/* The power button on the right edge. */
+.phone-btn {
+  position: absolute;
+  top: 96px;
+  right: -8px;
+  width: 5px;
+  height: 56px;
+  background: #3a3f5c;
+  border: 2px solid var(--ink);
+  border-radius: 3px;
+}
+
+.phone-screen {
+  position: relative;
+  height: 100%;
+  background: #eef3ff;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.statusbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px 4px;
+  font-family: VT323, monospace;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.notch {
+  width: 54px;
+  height: 16px;
+  background: #0d1024;
+  border-radius: 999px;
+}
+
+.convo-hdr {
+  text-align: center;
+  padding: 4px 0 8px;
+  border-bottom: 2px solid #d5ddf5;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  margin: 0 auto 2px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--ink);
+  display: grid;
+  place-items: center;
+  font-family: Bungee, sans-serif;
+  font-size: 14px;
+  color: #fff;
+}
+
+.convo-name {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.thread {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 10px;
+}
+
+.bubble {
+  max-width: 80%;
+  padding: 7px 11px;
+  font-size: 13px;
+}
+
+.bubble.out {
+  align-self: flex-end;
+  background: #2f7bff;
+  color: #fff;
+  border-radius: 16px 16px 4px 16px;
+}
+
+.bubble.in {
+  align-self: flex-start;
+  max-width: 70%;
+  background: #dfe6f7;
+  border-radius: 16px 16px 16px 4px;
+  padding: 4px;
+}
+
+.bubble.in img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px 12px 12px 2px;
+}
+
+.stamp {
+  align-self: flex-start;
+  font-size: 11px;
+  color: #7a86ad;
+}
+
+.composer {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 8px 10px 12px;
+  border-top: 2px solid #d5ddf5;
+}
+
+.composer-field {
+  flex: 1;
+  background: #fff;
+  border: 2px solid #d5ddf5;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: #7a86ad;
+}
+
+.composer-send {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--ink);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 13px;
+}
+
+/* ── responsive ──────────────────────────────────────────────────────
+   Scale the whole 720px window down in steps, then below 760px drop the
+   chrome entirely and go full-bleed with the ticker pinned to the base. */
+@media (max-width: 840px), (max-height: 1140px) {
+  .w95win {
+    zoom: 0.8;
+  }
+}
+@media (max-width: 660px), (max-height: 940px) {
+  .w95win {
+    zoom: 0.64;
+  }
+}
+@media (max-width: 520px), (max-height: 760px) {
+  .w95win {
+    zoom: 0.5;
+  }
+}
+@media (max-width: 420px), (max-height: 620px) {
+  .w95win {
+    zoom: 0.4;
+  }
+}
+
+@media (max-width: 760px) {
+  .desk {
+    padding: 0;
+    background: var(--mobile-desk);
+  }
+
+  /* Switch layout only on the variant that is actually showing. Setting
+     `display` on bare `.desk` ties on specificity with `.variant {
+     display: none }` and, coming later, wins — which un-hides every phone
+     variant at once. These selectors out-rank both, so the inactive one
+     stays hidden. */
+  body.state-flip .variant-flip,
+  body.state-smart .variant-smart {
+    display: block;
+  }
+
+  .w95win {
+    zoom: 1;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .tbar {
+    display: none;
+  }
+
+  .content {
+    border: none;
+    min-height: 100svh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 38px;
+  }
+
+  .tickbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    margin: 0;
+    border: none;
+  }
+
+  .tick {
+    font-size: 17px;
+  }
+
+  .hdr {
+    padding: 26px 16px 0;
+  }
+
+  .hdr h1,
+  .variant-smart .hdr h1 {
+    font-size: clamp(27px, 8.6vw, 58px);
+  }
+
+  .hdr p {
+    font-size: 15px;
+  }
+
+  .badge {
+    font-size: 16px;
+  }
+
+  /* Polaroids stop being scattered and become a plain two-up grid. */
+  .stage-flip {
+    height: auto;
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 16px;
+    align-content: center;
+    padding: 12px clamp(18px, 5vw, 32px) 16px;
+  }
+
+  .polaroid {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+  }
+
+  .polaroid img {
+    width: 100%;
+    height: 36vw;
+  }
+
+  .cap {
+    font-size: 15px;
+  }
+
+  .stage-smart {
+    height: auto;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0 16px;
+  }
+
+  .phone {
+    position: static;
+    margin-left: 0;
+    width: min(64vw, 240px);
+  }
+}
+
+/* Respect users who have asked for less motion: the marquee and the
+   blinking dots are decorative, so simply stop them. */
+@media (prefers-reduced-motion: reduce) {
+  .tick,
+  .dot1,
+  .dot2,
+  .dot3 {
+    animation: none;
+  }
+}
