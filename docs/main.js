@@ -14,21 +14,85 @@ const ENDPOINT = "https://reach-blake.reach-blake.workers.dev/";
  */
 const TIMEOUT_MS = 6000;
 
-/** Must match VALID_STATUSES in the Worker. */
+/**
+ * The only statuses the API may return. Must match VALID_STATUSES in the Worker.
+ *
+ * Deliberately separate from {@link STATES}: that map also holds `loading` and
+ * `failed`, which are ours alone and must never be accepted off the wire.
+ *
+ * @type {readonly string[]}
+ */
+const API_STATUSES = ["flip", "smart"];
+
+/**
+ * Everything that changes when the state does, in one place — including the
+ * two states the API cannot produce.
+ *
+ * `theme` mirrors the palette each variant sets in style.css: --mobile-desk for
+ * the two phone pages, --desk for the plain ones, so the browser chrome on
+ * mobile matches the page instead of staying default.
+ *
+ * @type {Record<string, { title: string, theme: string, icon: string }>}
+ */
 const STATES = {
-  flip: "call blake on his flip!",
-  smart: "text blake like a normal person!",
-  failed: "failed :(",
+  loading: {
+    title: "loading...",
+    theme: "#2a1548",
+    icon: "icons/phone-landline.svg",
+  },
+  flip: {
+    title: "call blake on his flip!",
+    theme: "#ef7fbe",
+    icon: "icons/phone-landline.svg",
+  },
+  smart: {
+    title: "text blake like a normal person!",
+    theme: "#6fc7e8",
+    icon: "icons/phone-mobile.svg",
+  },
+  failed: {
+    title: "failed :(",
+    theme: "#2a1548",
+    icon: "icons/phone-landline.svg",
+  },
 };
 
 /**
- * Swaps the visible variant and updates the tab title to match.
+ * Points the SVG favicon at a new file.
  *
- * @param {'flip' | 'smart' | 'failed'} state
+ * Assigning to `link.href` alone is unreliable — several browsers cache the
+ * icon against the element and never re-read it. Replacing the node forces
+ * every browser to treat it as a new icon, which is why this looks like
+ * pointless indirection and is not.
+ *
+ * @param {string} href Icon path, relative to the page.
+ */
+function setFavicon(href) {
+  const link = document.getElementById("favicon");
+
+  if (!link || link.getAttribute("href") === href) {
+    return;
+  }
+
+  const replacement = link.cloneNode(true);
+  replacement.setAttribute("href", href);
+  link.replaceWith(replacement);
+}
+
+/**
+ * Swaps the visible variant and brings the title, favicon and browser chrome
+ * along with it. The single place that knows how a state looks.
+ *
+ * @param {'loading' | 'flip' | 'smart' | 'failed'} state
  */
 function show(state) {
+  const { title, theme, icon } = STATES[state];
+  const themeColor = document.querySelector('meta[name="theme-color"]');
+
   document.body.className = `state-${state}`;
-  document.title = STATES[state];
+  document.title = title;
+  themeColor?.setAttribute("content", theme);
+  setFavicon(icon);
 }
 
 /**
@@ -52,7 +116,7 @@ async function main() {
 
     const { status } = await response.json();
 
-    if (!Object.hasOwn(STATES, status) || status === "failed") {
+    if (!API_STATUSES.includes(status)) {
       throw new Error(`unrecognised status: ${status}`);
     }
 

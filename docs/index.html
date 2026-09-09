@@ -11,6 +11,29 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+
+    <!-- Phone icons are Twemoji (Copyright 2020 Twitter, Inc and other
+         contributors), CC-BY 4.0 - see icons/ATTRIBUTION.txt.
+
+         Every href below is relative, like the stylesheet and images above.
+         The site is served from a custom apex domain, so a leading slash would
+         work there - but not at the github.io fallback URL, which nests the
+         site under /how-2-reach-blake/, nor when serving docs/ locally.
+
+         favicon.ico stays at the site root because browsers request
+         /favicon.ico implicitly, and it carries sizes="32x32" so that browsers
+         preferring a declared size do not pick it over the scalable SVG. -->
+    <link rel="icon" href="favicon.ico" sizes="32x32" />
+    <link
+      rel="icon"
+      id="favicon"
+      href="icons/phone-landline.svg"
+      type="image/svg+xml"
+    />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <!-- Starting value only; main.js swaps it per state, same as the title. -->
+    <meta name="theme-color" content="#2a1548" />
     <!-- Without JS the fetch never runs, so fall straight through to the
 		     failed state rather than leaving the loader spinning forever. -->
     <noscript>

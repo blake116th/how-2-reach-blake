@@ -1,0 +1,17 @@
+The phone icons in this directory (and docs/favicon.ico) are Twitter Twemoji
+graphics, used unmodified.
+
+- Graphics Title: 260e.svg (BLACK TELEPHONE)
+  Used for: favicon.ico, apple-touch-icon.png, android-chrome-192x192.png,
+            android-chrome-512x512.png, phone-landline.svg
+  Graphics Source: https://github.com/twitter/twemoji/blob/v14.0.2/assets/svg/260e.svg
+
+- Graphics Title: 1f4f1.svg (MOBILE PHONE)
+  Used for: phone-mobile.svg
+  Graphics Source: https://github.com/twitter/twemoji/blob/v14.0.2/assets/svg/1f4f1.svg
+
+Graphics Author: Copyright 2020 Twitter, Inc and other contributors
+                 (https://github.com/twitter/twemoji)
+Graphics License: CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+
+The PNG and ICO files were rasterised from 260e.svg by https://favicon.io.
