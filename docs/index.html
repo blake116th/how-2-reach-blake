@@ -12,8 +12,9 @@
     />
     <link rel="stylesheet" href="style.css" />
 
-    <!-- Phone icons are Twemoji (Copyright 2020 Twitter, Inc and other
-         contributors), CC-BY 4.0 - see icons/ATTRIBUTION.txt.
+    <!-- Two icon sets, split by size. The tab gets flat Twemoji vector, which
+         survives being drawn at 16px; the home screen gets the floppa
+         photograph, which does not. See icons/ATTRIBUTION.txt for both.
 
          Every href below is relative, like the stylesheet and images above.
          The site is served from a custom apex domain, so a leading slash would
@@ -22,7 +23,11 @@
 
          favicon.ico stays at the site root because browsers request
          /favicon.ico implicitly, and it carries sizes="32x32" so that browsers
-         preferring a declared size do not pick it over the scalable SVG. -->
+         preferring a declared size do not pick it over the scalable SVG.
+
+         apple-touch-icon is declared here rather than left to the manifest:
+         iOS gives this tag precedence over the manifest icons, and falls back
+         to a screenshot of the page if it is missing entirely. -->
     <link rel="icon" href="favicon.ico" sizes="32x32" />
     <link
       rel="icon"

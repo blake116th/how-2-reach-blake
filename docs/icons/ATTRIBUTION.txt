@@ -1,17 +1,34 @@
-The phone icons in this directory (and docs/favicon.ico) are Twitter Twemoji
-graphics, used unmodified.
+Two separate icon sets live here, because they do different jobs.
 
-- Graphics Title: 260e.svg (BLACK TELEPHONE)
-  Used for: favicon.ico, apple-touch-icon.png, android-chrome-192x192.png,
-            android-chrome-512x512.png, phone-landline.svg
-  Graphics Source: https://github.com/twitter/twemoji/blob/v14.0.2/assets/svg/260e.svg
 
-- Graphics Title: 1f4f1.svg (MOBILE PHONE)
-  Used for: phone-mobile.svg
-  Graphics Source: https://github.com/twitter/twemoji/blob/v14.0.2/assets/svg/1f4f1.svg
+BROWSER TAB — Twitter Twemoji, used unmodified
+----------------------------------------------
+  phone-landline.svg   260e.svg  (BLACK TELEPHONE)   - default, and the flip state
+  phone-mobile.svg     1f4f1.svg (MOBILE PHONE)      - the smart state
+  ../favicon.ico       rasterised from 260e.svg by https://favicon.io
 
-Graphics Author: Copyright 2020 Twitter, Inc and other contributors
-                 (https://github.com/twitter/twemoji)
-Graphics License: CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+  Flat vector, because a photograph is unreadable at 16px.
 
-The PNG and ICO files were rasterised from 260e.svg by https://favicon.io.
+  Graphics Author: Copyright 2020 Twitter, Inc and other contributors
+                   (https://github.com/twitter/twemoji)
+  Graphics Source: https://github.com/twitter/twemoji/blob/v14.0.2/assets/svg/
+  Graphics License: CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+
+
+HOME SCREEN / INSTALLED APP — custom, commissioned for this site
+---------------------------------------------------------------
+  apple-touch-icon.png       180x180  iOS home screen (iOS ignores the manifest
+                                      icons when this is present)
+  icon-192.png               192x192  manifest, purpose "any"
+  icon-512.png               512x512  manifest, purpose "any"
+  icon-512-maskable.png      512x512  manifest, purpose "maskable"
+
+  The photograph is the same caracal image used on the page itself
+  (../images/big-floppa.webp). The gradient behind it runs from --accent
+  (#ff3ea5) to --ticker-fg (#7df9ff), the two accent colours defined in
+  ../style.css - pink for the flip variant, cyan for the smart one.
+
+  All four are fully opaque and full-bleed: iOS does not honour the alpha
+  channel on a home screen icon and would flatten transparency to black.
+  Re-encoded from the delivered PNGs to a 256-colour palette - 260K down from
+  919K, with no visible difference at any size these are drawn at.
