@@ -26,9 +26,11 @@ HOME SCREEN / INSTALLED APP — custom, commissioned for this site
   The photograph is the same caracal image used on the page itself
   (../images/big-floppa.webp). The gradient behind it runs from --accent
   (#ff3ea5) to --ticker-fg (#7df9ff), the two accent colours defined in
-  ../style.css - pink for the flip variant, cyan for the smart one.
+  ../style.css - pink for the flip variant, cyan for the smart one. The photo
+  sits in an iOS-style continuous-corner (squircle) inset, so it echoes the
+  mask iOS draws around the whole icon.
 
   All four are fully opaque and full-bleed: iOS does not honour the alpha
   channel on a home screen icon and would flatten transparency to black.
-  Re-encoded from the delivered PNGs to a 256-colour palette - 260K down from
-  919K, with no visible difference at any size these are drawn at.
+  Re-encoded from the delivered PNGs to a 256-colour palette - 245K down from
+  914K, with no visible difference at any size these are drawn at.
