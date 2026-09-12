@@ -549,6 +549,19 @@ body.state-smart .variant-smart {
     background: var(--mobile-desk);
   }
 
+  /* Safari paints everything outside the page — behind the status bar and
+     toolbar, the overscroll bounce, the landscape safe areas — with the body
+     background, so it has to match the phone page too or those edges stay
+     --desk purple. Repeated literally because --mobile-desk lives on the
+     variant, which body cannot read. Keep in step with the tokens above. */
+  body.state-flip {
+    background: #ef7fbe;
+  }
+
+  body.state-smart {
+    background: #6fc7e8;
+  }
+
   /* Switch layout only on the variant that is actually showing. Setting
      `display` on bare `.desk` ties on specificity with `.variant {
      display: none }` and, coming later, wins — which un-hides every phone
