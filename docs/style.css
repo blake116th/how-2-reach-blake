@@ -24,6 +24,15 @@
   --mobile-desk: #6fc7e8;
 }
 
+/* ── page ────────────────────────────────────────────────────────────
+   No rubber-band bounce past the ends of the page. Only the root element's
+   overscroll-behavior reaches the viewport, so this must be on html, not
+   body; and only `none` stops the bounce - `contain` still bounces. Also
+   disables pull-to-refresh. */
+html {
+  overscroll-behavior: none;
+}
+
 /* ── state switching ─────────────────────────────────────────────────
    One class on <body> is the single source of truth. Inactive variants
    are display:none so they leave the accessibility tree entirely. */
