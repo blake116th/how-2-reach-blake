@@ -6,6 +6,10 @@
     <title>loading...</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Turnstile's script and iframe both come from here, and main.js asks
+         for them as soon as it runs, so warm the connection while the page
+         parses. No crossorigin: neither request uses CORS. -->
+    <link rel="preconnect" href="https://challenges.cloudflare.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Bungee&family=VT323&family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"

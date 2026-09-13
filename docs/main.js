@@ -376,6 +376,18 @@ let turnstileLoad;
 let attempt = 0;
 
 /**
+ * Runs one Turnstile check and trades its token for the status and number.
+ * Rejects with a {@link CtaFailure} naming the phase to show.
+ *
+ * @returns {Promise<{ status: 'flip' | 'smart', number: string }>}
+ */
+async function requestNumber() {
+  turnstileLoad ??= loadTurnstile();
+  const token = await runChallenge(await turnstileLoad);
+  return fetchNumber(token);
+}
+
+/**
  * Takes one phone page's button from checking to the number, or to the right
  * failure.
  *
@@ -383,15 +395,15 @@ let attempt = 0;
  * page switches rather than show one phone's number on the other's page.
  *
  * @param {'flip' | 'smart'} state The page currently showing.
+ * @param {ReturnType<typeof requestNumber>} [request] A request already under
+ *   way. Page load starts one before the status is known; a retry starts afresh.
  */
-async function reveal(state) {
+async function reveal(state, request = requestNumber()) {
   const current = ++attempt;
   setCta(state, "checking");
 
   try {
-    turnstileLoad ??= loadTurnstile();
-    const token = await runChallenge(await turnstileLoad);
-    const { status, number } = await fetchNumber(token);
+    const { status, number } = await request;
 
     if (current !== attempt) {
       return;
@@ -420,8 +432,10 @@ async function reveal(state) {
  * the client honest about the same closed set the Worker enforces, so a value
  * we have no page for fails visibly instead of rendering nothing.
  *
- * The failed page has no button, so the number is only asked for once a phone
- * page is actually showing.
+ * The number is asked for at the same time, not after. The check takes a second
+ * or more and does not need the status — the Worker returns it with the number
+ * — so waiting for the status read first would only add its round trip. If that
+ * read fails, the failed page has no button and the number is dropped unseen.
  */
 async function main() {
   // The whole button is the retry, but only while retrying can help.
@@ -433,6 +447,10 @@ async function main() {
       }
     });
   }
+
+  const early = requestNumber();
+  // Nothing awaits it if the status read fails; this keeps that rejection quiet.
+  early.catch(() => {});
 
   let status;
   try {
@@ -456,7 +474,7 @@ async function main() {
   }
 
   show(status);
-  reveal(status);
+  reveal(status, early);
 }
 
 main();
