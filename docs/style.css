@@ -11,8 +11,12 @@
   --content-bg: #ef7fbe;
   --ink: #2a0b3d;
   --ticker-bg: #2a0b3d;
-  --ticker-fg: #c6ff3e;
+  --ticker-fg: #ef7fbe;
   --mobile-desk: #ef7fbe;
+  --cta-hover: #3d1657;
+  --cta-shimmer: #6a3d8f;
+  --cta-muted: #5a4468;
+  --cta-shadow: rgba(42, 11, 61, 0.45);
 }
 
 .variant-smart {
@@ -22,6 +26,10 @@
   --ticker-fg: #7df9ff;
   --accent: #ff3ea5;
   --mobile-desk: #6fc7e8;
+  --cta-hover: #182261;
+  --cta-shimmer: #2f3f9e;
+  --cta-muted: #3d4a78;
+  --cta-shadow: rgba(11, 20, 64, 0.45);
 }
 
 /* ── page ────────────────────────────────────────────────────────────
@@ -226,6 +234,135 @@ body.state-smart .variant-smart {
   font-size: 19px;
   font-weight: 500;
   color: var(--ink);
+}
+
+/* ── call / text button ──────────────────────────────────────────────
+   One bar, five phases set by main.js on data-phase:
+
+   checking     shimmer, placeholder number, not clickable
+   ready        the real tel:/sms: link
+   rejected     redacted number; the whole button runs the check again
+   unavailable  redacted and dead: this browser cannot run Turnstile
+   broken       redacted and dead: the site itself is misconfigured
+
+   The link and the button are separate elements because only a real link
+   gets long-press "copy number" and announces itself as one; main.js
+   shows exactly one of them. */
+.ctabar {
+  padding: 6px 26px 24px;
+}
+
+.variant-smart .ctabar {
+  padding-top: 20px;
+}
+
+.cta {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 58px;
+  margin: 0;
+  background: var(--ink);
+  color: #fff;
+  border: 3px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: 0 5px 0 var(--cta-shadow);
+  font-family: Bungee, sans-serif;
+  font-size: 19px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  cursor: pointer;
+  appearance: none;
+}
+
+/* The display above outranks the browser's own [hidden] rule, which would
+   otherwise leave the hidden link or button on screen. */
+.cta[hidden] {
+  display: none;
+}
+
+.cta:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+.cta-icon {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: var(--ticker-fg);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cta-link:hover {
+  background: var(--cta-hover);
+}
+
+.cta-link:active,
+.ctabar[data-phase="rejected"] .cta-status:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 var(--cta-shadow);
+}
+
+.ctabar[data-phase="checking"] .cta-status {
+  color: rgba(255, 255, 255, 0.75);
+  background: linear-gradient(
+    100deg,
+    var(--cta-hover) 40%,
+    var(--cta-shimmer) 50%,
+    var(--cta-hover) 60%
+  );
+  background-size: 200% 100%;
+  box-shadow: none;
+  cursor: progress;
+  animation: shimmer 1.6s linear infinite;
+}
+
+.ctabar[data-phase="rejected"] .cta-status {
+  background: var(--cta-muted);
+  box-shadow: none;
+}
+
+.ctabar[data-phase="unavailable"] .cta-status,
+.ctabar[data-phase="broken"] .cta-status {
+  color: rgba(255, 255, 255, 0.6);
+  background: var(--cta-muted);
+  box-shadow: none;
+  cursor: default;
+}
+
+.ctabar[data-phase="checking"] .cta-icon,
+.ctabar[data-phase="unavailable"] .cta-icon,
+.ctabar[data-phase="broken"] .cta-icon {
+  opacity: 0.6;
+}
+
+.cta-note {
+  margin: 8px 0 0;
+  text-align: center;
+  font-family: VT323, monospace;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+/* Empty but kept in the DOM, so screen readers hear it when text arrives. */
+.cta-note:empty {
+  display: none;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
 }
 
 /* ── ticker ──────────────────────────────────────────────────────── */
@@ -601,7 +738,14 @@ body.state-smart .variant-smart {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    padding-bottom: 38px;
+    /* Room for the ticker (38px) and the button bar pinned above it. */
+    padding-bottom: 118px;
+  }
+
+  /* A failure note makes the bar taller; grow the room to match rather
+     than let the bar cover the bottom of the stage. */
+  .content:has(.cta-note:not(:empty)) {
+    padding-bottom: 150px;
   }
 
   .tickbar {
@@ -612,6 +756,19 @@ body.state-smart .variant-smart {
     z-index: 20;
     margin: 0;
     border: none;
+  }
+
+  /* Pinned in thumb reach, fading into the page so the stage scrolls
+     under it cleanly. */
+  .ctabar,
+  .variant-smart .ctabar {
+    position: fixed;
+    bottom: 38px;
+    left: 0;
+    right: 0;
+    z-index: 19;
+    padding: 14px 16px 12px;
+    background: linear-gradient(180deg, transparent 0%, var(--content-bg) 40%);
   }
 
   .tick {
@@ -679,10 +836,12 @@ body.state-smart .variant-smart {
   }
 }
 
-/* Respect users who have asked for less motion: the marquee and the
-   blinking dots are decorative, so simply stop them. */
+/* Respect users who have asked for less motion: the marquee, the
+   blinking dots and the button shimmer are decorative, so simply stop
+   them. */
 @media (prefers-reduced-motion: reduce) {
   .tick,
+  .ctabar[data-phase="checking"] .cta-status,
   .dot1,
   .dot2,
   .dot3 {
