@@ -1,3 +1,16 @@
-# Copy to .dev.vars and replace with your own value:
+# Copy to .dev.vars and replace STATUS_WRITE_TOKEN with your own value:
 #   openssl rand -hex 32
 STATUS_WRITE_TOKEN="generate-me"
+
+# Cloudflare's always-pass Turnstile test secret, paired with the test sitekey
+# the front end uses on localhost. Swap in 2x0000000000000000000000000000000AA
+# to see a rejected token, or 3x0000000000000000000000000000000AA for a spent one.
+TURNSTILE_SECRET_KEY="1x0000000000000000000000000000000AA"
+
+# Test secrets answer with hostname example.com and no action, so they cannot
+# pass the production checks. This lets them through. Never set it in production.
+TURNSTILE_ALLOW_TEST_KEYS="true"
+
+# Fake numbers, in E.164. The real ones exist only as production secrets.
+PHONE_FLIP="+15551234567"
+PHONE_SMART="+15559876543"

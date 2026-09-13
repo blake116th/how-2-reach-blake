@@ -6,6 +6,7 @@
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
     "start": "wrangler dev",
+    "site": "python3 -m http.server 8000 --bind 127.0.0.1 --directory ../docs",
     "test": "vitest",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

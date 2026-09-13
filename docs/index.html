@@ -83,9 +83,7 @@
           <div class="hdr">
             <div class="badge">*** FLIP PHONE MODE ***</div>
             <h1>CALL BLAKE ON HIS FLIP!</h1>
-            <p>
-              no apps. no read receipts. just a telephone chat like its '85.
-            </p>
+            <p>blake's off the grid... mostly. dial him like it's 1999.</p>
           </div>
           <div class="stage stage-flip">
             <figure class="polaroid p1">
@@ -141,6 +139,32 @@
               <div class="tape"></div>
             </figure>
           </div>
+          <!-- Starts checking; main.js moves it on once Turnstile answers.
+               The number only arrives from the Worker, never in this file. -->
+          <div class="ctabar" data-phase="checking">
+            <a class="cta cta-link" hidden>
+              <svg class="cta-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
+                />
+              </svg>
+              <span class="cta-text"></span>
+            </a>
+            <button
+              type="button"
+              class="cta cta-status"
+              aria-disabled="true"
+              aria-label="getting blake's number"
+            >
+              <svg class="cta-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
+                />
+              </svg>
+              <span class="cta-text" aria-hidden="true">CALL ···-···-····</span>
+            </button>
+            <p class="cta-note" aria-live="polite"></p>
+          </div>
         </div>
         <div class="tickbar">
           <div class="tick">
@@ -175,8 +199,8 @@
         <div class="content">
           <div class="hdr">
             <div class="badge">*** SMARTPHONE MODE ***</div>
-            <h1>TEXT BLAKE LIKE A NORMAL PERSON!</h1>
-            <p>slide him a blue bubble. he will get to it. eventually.</p>
+            <h1>TEXT BLAKE ON HIS IPHONE!</h1>
+            <p>send him a blue bubble. he'll get to it. eventually.</p>
           </div>
           <div class="stage stage-smart">
             <div class="phone">
@@ -214,6 +238,30 @@
               </div>
             </div>
           </div>
+          <div class="ctabar" data-phase="checking">
+            <a class="cta cta-link" hidden>
+              <svg class="cta-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                />
+              </svg>
+              <span class="cta-text"></span>
+            </a>
+            <button
+              type="button"
+              class="cta cta-status"
+              aria-disabled="true"
+              aria-label="getting blake's number"
+            >
+              <svg class="cta-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                />
+              </svg>
+              <span class="cta-text" aria-hidden="true">TEXT ···-···-····</span>
+            </button>
+            <p class="cta-note" aria-live="polite"></p>
+          </div>
         </div>
         <div class="tickbar">
           <div class="tick">
@@ -229,6 +277,14 @@
         </div>
       </div>
     </section>
+
+    <!-- Where main.js mounts the invisible Turnstile widget. It never shows,
+         but Turnstile still needs an element to render into.
+
+         The id must not be plain "turnstile": browsers expose elements by id
+         as globals, so window.turnstile would be this div. Turnstile then
+         thinks it is already loaded and never installs its API. -->
+    <div id="turnstile-widget"></div>
 
     <script src="main.js"></script>
   </body>
